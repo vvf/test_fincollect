@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView
 
+from currency_converter.management.commands.update_rates import check_rate_updates
 from currency_converter.models import Currency
 
 
@@ -17,7 +18,7 @@ class ConverterView(View):
                 or not currency_rate_to.rate_to_russian_rub \
                 or not currency_rate_from.rate_to_russian_rub:
             raise Http404(f'No currencies or rates for {from_slug} nor {to_slug}')
-
+        check_rate_updates(currency_rate_from)
         rate = round(currency_rate_from.rate_to_russian_rub / currency_rate_to.rate_to_russian_rub, 4)
         src_value = float(request.POST.get('value') or request.GET.get('value') or '0')
         dest_value = round(src_value * float(rate), 2)
@@ -35,4 +36,5 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs) or {}
         context['currencies'] = Currency.objects.all()
+        check_rate_updates(context['currencies'][0])
         return context
