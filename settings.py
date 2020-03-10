@@ -1,0 +1,1 @@
+/Users/vvf/Documents/freelance/django/test_fincollect/test_fincollect/settings.py
