@@ -1,3 +1,5 @@
+![Django CI](https://github.com/vvf/test_fincollect/workflows/Django%20CI/badge.svg)
+
 
 The assignment (trial)
 ----------------------
